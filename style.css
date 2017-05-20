@@ -1,0 +1,8 @@
+body {
+	background-image: url("background.png");
+	color: darkgrey;
+}
+
+.transparent {
+	background-color: transparent;
+}
