@@ -8,6 +8,8 @@
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+   <!-- LINK TO FIREBASE GOES HERE -->
+  <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 
 </head>
 
@@ -65,7 +67,7 @@
               </div>
               <div class="form-group">
                 <label for="email-input">Role:</label>
-                <input class="form-control" id="role-input" type="email">
+                <input class="form-control" id="role-input" type="text">
               </div>
               <div class="form-group">
                 <label for="age-input">Start Date:</label>
@@ -75,7 +77,7 @@
                 <label for="age-input">Monthly Rate:</label>
                 <input class="form-control" id="rate-input" type="number">
               </div>
-              <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+              <button class="btn btn-default" id="submit" type="submit">Submit</button>
             </form>
           </div>
         </div>
@@ -88,6 +90,60 @@
 
 
   </div>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+  <!-- Script -->
+  <script>
+
+// Initialize Firebase
+    // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDyPRAcsbgL446GZISL5y_UgGGAQjes8Y8",
+    authDomain: "employee-management-app.firebaseapp.com",
+    databaseURL: "https://employee-management-app.firebaseio.com",
+    projectId: "employee-management-app",
+    storageBucket: "employee-management-app.appspot.com",
+    messagingSenderId: "1029811752832"
+  };
+  firebase.initializeApp(config);
+
+    // Create a variable to reference the database.
+    var database = firebase.database();
+
+    // Initial Values
+    var name = "";
+    var role = "";
+    var startDate = 0;
+    var monthlyRate = 0;
+
+
+    // Capture Button Click
+    $("#submit").on("click", function(event) {
+      event.preventDefault();
+
+      // Grabbed values from text boxes
+      name = $("#name-input").val().trim();
+      role = $("#role-input").val().trim();
+      startDate = $("#start-input").val().trim();
+      monthlyRate = $("#rate-input").val().trim();
+
+      // Code for handling the push
+      database.ref().push({
+        name: name,
+        role: role,
+        startDate: startDate,
+        monthlyRate: monthlyRate
+      });
+
+    });
+
+
+
+
+
+  </script>
 
 
 
