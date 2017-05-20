@@ -21,7 +21,7 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-      <h1 class="text-center">Sign-Up Today!</h1>
+      <h1 class="text-center">Employee Management</h1>
     </div>
     <table class="table">
   <thead>
@@ -34,15 +34,6 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row"></th>
-    </tr>
-    <tr>
-      <th scope="row"></th>
-    </tr>
-    <tr>
-      <th scope="row"></th>
-    </tr>
   </tbody>
 </table>
 
@@ -111,7 +102,7 @@
   firebase.initializeApp(config);
 
     // Create a variable to reference the database.
-    var database = firebase.database();
+    var dataRef = firebase.database();
 
     // Initial Values
     var name = "";
@@ -131,7 +122,7 @@
       monthlyRate = $("#rate-input").val().trim();
 
       // Code for handling the push
-      database.ref().push({
+      dataRef.ref().push({
         name: name,
         role: role,
         startDate: startDate,
@@ -139,6 +130,37 @@
       });
 
     });
+
+    dataRef.ref().on("child_added", function(childSnapshot) {
+
+      // Log everything that's coming out of snapshot
+      console.log(childSnapshot.val().name);
+      console.log(childSnapshot.val().role);
+      console.log(childSnapshot.val().startDate);
+      console.log(childSnapshot.val().monthlyRate);
+
+      var child = childSnapshot.val();
+
+      // full list of items to the well
+      $("#full-member-list").append("<div class='well'><span id='name'> " + childSnapshot.val().name +
+        " </span><span id='email'> " + childSnapshot.val().email +
+        " </span><span id='age'> " + childSnapshot.val().age +
+        " </span><span id='comment'> " + childSnapshot.val().comment + " </span></div>");
+
+    // Handle the errors
+    }, function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
+
+    dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+
+      // Change the HTML to reflect
+      $("#name-display").html(snapshot.val().name);
+      $("#email-display").html(snapshot.val().email);
+      $("#age-display").html(snapshot.val().age);
+      $("#comment-display").html(snapshot.val().comment);
+    });
+
 
 
 
